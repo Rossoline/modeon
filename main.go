@@ -5,12 +5,13 @@ import "fmt"
 type Person struct {
 	Name        string
 	PhoneNumber string
+	Task        []string
 }
 
 //Task Manager App
 
 func main() {
-	person1 := Person{"New person", "101"}
+	person1 := Person{"New person", "101", []string{}}
 	info(person1)
 }
 
