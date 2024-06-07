@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"slices"
+)
 
 type Person struct {
 	Name        string
@@ -19,5 +22,8 @@ func info(p Person) {
 }
 
 func AddTask(p *Person, s string) {
+	if slices.Contains(p.Task, s) {
+		return
+	}
 	p.Task = append(p.Task, s)
 }
