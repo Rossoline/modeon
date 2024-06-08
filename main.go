@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"slices"
+)
 
 type Person struct {
 	Name        string
@@ -11,10 +14,16 @@ type Person struct {
 //Task Manager App
 
 func main() {
-	person1 := Person{"New person", "101", []string{}}
-	info(person1)
+
 }
 
 func info(p Person) {
 	fmt.Println(p)
+}
+
+func AddTask(p *Person, s string) {
+	if slices.Contains(p.Task, s) {
+		return
+	}
+	p.Task = append(p.Task, s)
 }
