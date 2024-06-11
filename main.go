@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"slices"
+	"time"
 )
 
 type Person struct {
@@ -12,8 +13,14 @@ type Person struct {
 }
 
 type Task struct {
-	Date        string
+	Title       string
 	Description string
+	DueDate     time.Time
+	Completed   bool
+}
+
+type TaskManager struct {
+	Tasks []Task
 }
 
 //Task Manager App
