@@ -26,6 +26,7 @@ type TaskManager struct {
 //Task Manager App
 
 func main() {
+	fmt.Println("App started")
 	p := Person{}
 	info(p)
 }
