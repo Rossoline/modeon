@@ -2,20 +2,21 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"time"
 )
-
-type Person struct {
-	Name        string
-	PhoneNumber string
-	Task        []Task
-}
 
 type Task struct {
 	Title       string
 	Description string
 	DueDate     time.Time
 	Completed   bool
+}
+
+type Person struct {
+	Name        string
+	PhoneNumber string
+	TaskManager TaskManager
 }
 
 type TaskManager struct {
@@ -39,20 +40,18 @@ func (t Task) Equals(other Task) bool {
 }
 
 // AddTask : Adds a task to the person's task list if it doesn't already exist
-func AddTask(p *Person, t Task) {
-	for _, task := range p.Task {
-		if task.Equals(t) {
-			return
-		}
+func (tm *TaskManager) AddTask(t Task) {
+	if slices.Contains(tm.Tasks, t) {
+		return
 	}
-	p.Task = append(p.Task, t)
+	tm.Tasks = append(tm.Tasks, t)
 }
 
 // EditTask : Edits an existing task based on its title
-func EditTask(p *Person, oldTitle string, newTask Task) bool {
-	for i, task := range p.Task {
+func (tm *TaskManager) EditTask(oldTitle string, newTask Task) bool {
+	for i, task := range tm.Tasks {
 		if task.Title == oldTitle {
-			p.Task[i] = newTask
+			tm.Tasks[i] = newTask
 			return true
 		}
 	}
@@ -60,10 +59,10 @@ func EditTask(p *Person, oldTitle string, newTask Task) bool {
 }
 
 // DeleteTask : Removes a task based on its title.
-func DeleteTask(p *Person, title string) bool {
-	for i, task := range p.Task {
+func (tm *TaskManager) DeleteTask(title string) bool {
+	for i, task := range tm.Tasks {
 		if task.Title == title {
-			p.Task = append(p.Task[:i], p.Task[i+1:]...)
+			tm.Tasks = append(tm.Tasks[:i], tm.Tasks[i+1:]...)
 			return true
 		}
 	}
@@ -71,10 +70,10 @@ func DeleteTask(p *Person, title string) bool {
 }
 
 // MarkTaskAsCompleted : Marks a task as completed based on its title.
-func MarkTaskAsCompleted(p *Person, title string) bool {
-	for i, task := range p.Task {
+func (tm *TaskManager) MarkTaskAsCompleted(title string) bool {
+	for i, task := range tm.Tasks {
 		if task.Title == title {
-			p.Task[i].Completed = true
+			tm.Tasks[i].Completed = true
 			return true
 		}
 	}
@@ -82,16 +81,16 @@ func MarkTaskAsCompleted(p *Person, title string) bool {
 }
 
 // ListAllTasks : Lists all tasks of a person.
-func ListAllTasks(p *Person) {
-	for _, task := range p.Task {
+func (tm *TaskManager) ListAllTasks() {
+	for _, task := range tm.Tasks {
 		fmt.Printf("Title: %s, Description: %s, DueDate: %s, Completed: %t\n", task.Title, task.Description, task.DueDate.Format("2006-01-02"), task.Completed)
 	}
 }
 
 // FilterTasks : Filters tasks by their completion status.
-func FilterTasks(p *Person, completed bool) []Task {
+func (tm *TaskManager) FilterTasks(completed bool) []Task {
 	var filteredTasks []Task
-	for _, task := range p.Task {
+	for _, task := range tm.Tasks {
 		if task.Completed == completed {
 			filteredTasks = append(filteredTasks, task)
 		}
