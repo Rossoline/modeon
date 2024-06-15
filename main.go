@@ -81,16 +81,16 @@ func (tm *TaskManager) MarkTaskAsCompleted(title string) bool {
 }
 
 // ListAllTasks : Lists all tasks of a person.
-func ListAllTasks(p *Person) {
-	for _, task := range p.Task {
+func (tm *TaskManager) ListAllTasks() {
+	for _, task := range tm.Tasks {
 		fmt.Printf("Title: %s, Description: %s, DueDate: %s, Completed: %t\n", task.Title, task.Description, task.DueDate.Format("2006-01-02"), task.Completed)
 	}
 }
 
 // FilterTasks : Filters tasks by their completion status.
-func FilterTasks(p *Person, completed bool) []Task {
+func (tm *TaskManager) FilterTasks(completed bool) []Task {
 	var filteredTasks []Task
-	for _, task := range p.Task {
+	for _, task := range tm.Tasks {
 		if task.Completed == completed {
 			filteredTasks = append(filteredTasks, task)
 		}
