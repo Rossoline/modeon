@@ -97,3 +97,13 @@ func (tm *TaskManager) FilterTasks(completed bool) []Task {
 	}
 	return filteredTasks
 }
+
+func (tm *TaskManager) FilterTasksByDate(dueDate time.Time) []Task {
+	var filteredTasks []Task
+	for _, task := range tm.Tasks {
+		if task.DueDate.Equal(dueDate) {
+			filteredTasks = append(filteredTasks, task)
+		}
+	}
+	return filteredTasks
+}
