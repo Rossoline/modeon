@@ -28,6 +28,7 @@ type TaskManager struct {
 func main() {
 	fmt.Println("App started")
 	fmt.Println("Program 1")
+	fmt.Println("Program 2")
 	p := Person{}
 	info(p)
 }
