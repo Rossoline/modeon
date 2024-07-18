@@ -48,6 +48,7 @@ func (tm *TaskManager) AddTask(t Task) {
 	}
 	tm.Tasks = append(tm.Tasks, t)
 	fmt.Println("You got net task:", t)
+	fmt.Println("Status is ok!")
 }
 
 // EditTask : Edits an existing task based on its title
