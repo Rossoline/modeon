@@ -67,6 +67,7 @@ func (tm *TaskManager) DeleteTask(title string) bool {
 	for i, task := range tm.Tasks {
 		if task.Title == title {
 			tm.Tasks = append(tm.Tasks[:i], tm.Tasks[i+1:]...)
+			fmt.Println("Task deleted")
 			return true
 		}
 	}
