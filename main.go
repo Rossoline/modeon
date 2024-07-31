@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"slices"
 	"time"
+
+	"github.com/lxn/walk"
+	. "github.com/lxn/walk/declarative"
 )
 
 type Task struct {
@@ -26,9 +29,40 @@ type TaskManager struct {
 //Task Manager App
 
 func main() {
-	fmt.Println("App started")
-	p := Person{}
-	info(p)
+	p := Person{Name: "John Doe", PhoneNumber: "123-456-7890"}
+
+	var taskTitleEdit *walk.LineEdit
+	var taskListBox *walk.ListBox
+	fmt.Println("Done")
+	MainWindow{
+		Title:   "Task Manager",
+		MinSize: Size{Width: 400, Height: 300},
+		Layout:  VBox{},
+		Children: []Widget{
+			LineEdit{
+				AssignTo: &taskTitleEdit,
+				Text:     "",
+			},
+			PushButton{
+				Text: "Add Task",
+				OnClicked: func() {
+					task := Task{
+						Title:       taskTitleEdit.Text(),
+						Description: "Description",
+						DueDate:     time.Now(),
+						Completed:   false,
+					}
+					p.TaskManager.AddTask(task)
+					taskListBox.SetModel(p.TaskManager.TaskTitles())
+					taskTitleEdit.SetText("")
+				},
+			},
+			ListBox{
+				AssignTo: &taskListBox,
+				Model:    p.TaskManager.TaskTitles(),
+			},
+		},
+	}.Run()
 }
 
 func info(p Person) {
@@ -106,4 +140,11 @@ func (tm *TaskManager) FilterTasksByDate(dueDate time.Time) []Task {
 		}
 	}
 	return filteredTasks
+}
+func (tm *TaskManager) TaskTitles() []string {
+	titles := make([]string, len(tm.Tasks))
+	for i, task := range tm.Tasks {
+		titles[i] = task.Title
+	}
+	return titles
 }
