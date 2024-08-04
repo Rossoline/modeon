@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"slices"
 	"time"
-
-	"github.com/lxn/walk"
-	. "github.com/lxn/walk/declarative"
 )
 
 type Task struct {
@@ -29,40 +26,11 @@ type TaskManager struct {
 //Task Manager App
 
 func main() {
-	p := Person{Name: "John Doe", PhoneNumber: "123-456-7890"}
+	fmt.Println("App started")
+	fmt.Println("Little changes")
 
-	var taskTitleEdit *walk.LineEdit
-	var taskListBox *walk.ListBox
-	fmt.Println("Done")
-	MainWindow{
-		Title:   "Task Manager",
-		MinSize: Size{Width: 400, Height: 300},
-		Layout:  VBox{},
-		Children: []Widget{
-			LineEdit{
-				AssignTo: &taskTitleEdit,
-				Text:     "",
-			},
-			PushButton{
-				Text: "Add Task",
-				OnClicked: func() {
-					task := Task{
-						Title:       taskTitleEdit.Text(),
-						Description: "Description",
-						DueDate:     time.Now(),
-						Completed:   false,
-					}
-					p.TaskManager.AddTask(task)
-					taskListBox.SetModel(p.TaskManager.TaskTitles())
-					taskTitleEdit.SetText("")
-				},
-			},
-			ListBox{
-				AssignTo: &taskListBox,
-				Model:    p.TaskManager.TaskTitles(),
-			},
-		},
-	}.Run()
+	p := Person{}
+	info(p)
 }
 
 func info(p Person) {
@@ -79,6 +47,7 @@ func (tm *TaskManager) AddTask(t Task) {
 		return
 	}
 	tm.Tasks = append(tm.Tasks, t)
+	fmt.Println("You got net task:", t)
 }
 
 // EditTask : Edits an existing task based on its title
@@ -97,6 +66,7 @@ func (tm *TaskManager) DeleteTask(title string) bool {
 	for i, task := range tm.Tasks {
 		if task.Title == title {
 			tm.Tasks = append(tm.Tasks[:i], tm.Tasks[i+1:]...)
+			fmt.Println("Task deleted")
 			return true
 		}
 	}
@@ -140,11 +110,4 @@ func (tm *TaskManager) FilterTasksByDate(dueDate time.Time) []Task {
 		}
 	}
 	return filteredTasks
-}
-func (tm *TaskManager) TaskTitles() []string {
-	titles := make([]string, len(tm.Tasks))
-	for i, task := range tm.Tasks {
-		titles[i] = task.Title
-	}
-	return titles
 }
